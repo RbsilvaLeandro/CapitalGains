@@ -1,23 +1,31 @@
 ﻿using System.Text.Json;
 using CapitalGainsCLI.Models;
 using CapitalGainsCLI.Interfaces;
-using CapitalGainsCLI.Services;     
+using CapitalGainsCLI.Services;
 
 namespace CapitalGainsCLI
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text.Json;
+    using CapitalGainsCLI.Models;
+
     class Program
     {
         static void Main(string[] args)
         {
-            ITaxCalculator calculator = new TaxCalculator();          
+            ITaxCalculator calculator = new TaxCalculator();
 
-            string? line;
-
-            while ((line = Console.ReadLine()) != null && line != "")
+            try
             {
-                try
+                // Lê TODO o STDIN como uma única string
+                string inputJson = Console.In.ReadToEnd();
+
+                if (!string.IsNullOrWhiteSpace(inputJson))
                 {
-                    var operations = JsonSerializer.Deserialize<List<Operation>>(line, new JsonSerializerOptions
+                    // Desserializa o JSON completo
+                    var operations = JsonSerializer.Deserialize<List<Operation>>(inputJson, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
                     });
@@ -29,13 +37,14 @@ namespace CapitalGainsCLI
                         Console.WriteLine(output);
                     }
                 }
-                catch (Exception ex)
-                {
-                    Console.Error.WriteLine($"Erro ao processar linha: {ex.Message}");
-                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Erro ao processar entrada: {ex.Message}");
             }
         }
     }
 
-    
+
+
 }
