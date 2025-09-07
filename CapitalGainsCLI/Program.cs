@@ -1,16 +1,10 @@
-﻿using System.Text.Json;
+﻿using CapitalGainsCLI.Interfaces;
 using CapitalGainsCLI.Models;
-using CapitalGainsCLI.Interfaces;
 using CapitalGainsCLI.Services;
+using System.Text.Json;
 
 namespace CapitalGainsCLI
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Text.Json;
-    using CapitalGainsCLI.Models;
-
     class Program
     {
         static void Main(string[] args)
@@ -19,12 +13,10 @@ namespace CapitalGainsCLI
 
             try
             {
-                // Lê TODO o STDIN como uma única string
                 string inputJson = Console.In.ReadToEnd();
 
                 if (!string.IsNullOrWhiteSpace(inputJson))
                 {
-                    // Desserializa o JSON completo
                     var operations = JsonSerializer.Deserialize<List<Operation>>(inputJson, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -44,7 +36,4 @@ namespace CapitalGainsCLI
             }
         }
     }
-
-
-
 }
